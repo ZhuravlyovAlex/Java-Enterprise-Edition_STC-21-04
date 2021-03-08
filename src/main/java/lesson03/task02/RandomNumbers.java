@@ -26,7 +26,7 @@ public class RandomNumbers {
         for (int i = 0; i < n; i++) { // генерим N случайных целых чисел.
             k = rd.nextInt(400) - 200;
             try {
-                if (k < 0) {
+                if (k < 0) { // проверяем на отрицательные значения; если значение отицательное, то выкидываем исключение IllegalArgumentException.
                     throw new IllegalArgumentException();
                 } else {
                     int q = (int) Math.sqrt(k); // вычисляем квадратный корень рандомного числа.
