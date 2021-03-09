@@ -1,4 +1,11 @@
-package lesson03.task03;
+package lesson03.task03.model;
+
+/**
+ * класс объекта Person
+ * <p>
+ * version 1.0
+ * Copyright Журавлёв Алексей
+ */
 
 public class Person {
     private int age;
