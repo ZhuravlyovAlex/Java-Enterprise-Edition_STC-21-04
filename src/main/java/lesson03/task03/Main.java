@@ -1,7 +1,5 @@
 package lesson03.task03;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -32,11 +30,11 @@ public class Main {
         long start = System.currentTimeMillis();
         PersonGeneratorWithBubbleSort people1 = PersonGenerator.personListBubbleSort(num);
         people1.sort();
-        List< PersonGeneratorWithBubbleSort> men1 = Arrays.asList(people1);
 
-        for (PersonGeneratorWithBubbleSort person : men1) {
-            System.out.println(person);
+        for (int i = 0; i < people1.size(); i++) {
+            System.out.println(people1.getNode(i).getValue());
         }
+
         long finish = System.currentTimeMillis();
 
         System.out.println("Время выполнения сортировки по методу Bubble Sort: " + (finish - start) + "ms");
@@ -47,11 +45,11 @@ public class Main {
         start = System.currentTimeMillis();
         PersonGeneratorWithInsertionSort people2 = PersonGenerator.personListInsertionSort(num);
         people2.sort();
-        List< PersonGeneratorWithInsertionSort> men2 = Arrays.asList(people2);
 
-        for (PersonGeneratorWithInsertionSort person : men2) {
-            System.out.println(person);
+        for (int i = 0; i < people2.size(); i++) {
+            System.out.println(people2.getNode(i).getValue());
         }
+
         finish = System.currentTimeMillis();
 
         System.out.println("Время выполнения сортировки по методу Insertion sort: " + (finish - start) + "ms");

@@ -1,9 +1,5 @@
 package lesson03.task03;
 
-import lesson03.task03.model.Person;
-import org.w3c.dom.Node;
-
-import java.util.Comparator;
 
 public class PersonGeneratorWithBubbleSort extends PersonLinkedList {
 
@@ -32,6 +28,5 @@ public class PersonGeneratorWithBubbleSort extends PersonLinkedList {
             }
         }
     }
-
 
 }

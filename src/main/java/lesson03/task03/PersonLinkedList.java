@@ -1,7 +1,6 @@
 package lesson03.task03;
 
 import lesson03.task03.model.Person;
-import org.w3c.dom.Node;
 
 public class PersonLinkedList implements PersonList {
     private Node first;
@@ -138,18 +137,6 @@ public class PersonLinkedList implements PersonList {
 
         public Person getValue() {
             return value;
-        }
-
-        public Node getNext() {
-            return next;
-        }
-
-        public void setPrevious(Node previous) {
-            this.previous = previous;
-        }
-
-        public void setValue(Person value) {
-            this.value = value;
         }
 
         public void setNext(Node next) {

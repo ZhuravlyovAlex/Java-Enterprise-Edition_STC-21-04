@@ -1,7 +1,5 @@
 package lesson03.task03.model;
 
-import java.util.Objects;
-
 /**
  * класс объекта Person
  * <p>
@@ -9,7 +7,7 @@ import java.util.Objects;
  * Copyright Журавлёв Алексей
  */
 
-public class Person implements Comparable<Person>{
+public class Person implements Comparable<Person> {
     private int age;
     private Sex sex;
     private String name;
@@ -32,10 +30,10 @@ public class Person implements Comparable<Person>{
         return name;
     }
 
-    public void setAge (int age) {
-        if(age > 0 || age <= 100) {
+    public void setAge(int age) {
+        if (age > 0 || age <= 100) {
             this.age = age;
-        }else{
+        } else {
             System.out.println("Вы ввели некоректное значение возроста");
         }
     }
@@ -58,9 +56,9 @@ public class Person implements Comparable<Person>{
         if (this.equals(person)) {  // момент возникновения ошибки DublicatePersonException
             return 0;
         }
-        if ((this.getSex() ==  Sex.MAN) && (person.getSex() == Sex.WOMAN)) { // сравниваем по половой пренадлежности
+        if ((this.getSex() == Sex.MAN) && (person.getSex() == Sex.WOMAN)) { // сравниваем по половой пренадлежности
             return -1;
-        }else if ((this.getAge() > person.getAge()) && (this.getSex() == person.getSex())){ // сравниваем по возрасту
+        } else if ((this.getAge() > person.getAge()) && (this.getSex() == person.getSex())) { // сравниваем по возрасту
             return -1;
         }
         if ((this.getAge() >= person.getAge()) && (this.getSex() == person.getSex()) && (this.getName().compareTo(person.getName()) <= -1)) { // сравниваем по алфавиту {
@@ -74,7 +72,7 @@ public class Person implements Comparable<Person>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        if (age != person.age){
+        if (age != person.age) {
             return false;
         }
         if (sex != person.sex) {

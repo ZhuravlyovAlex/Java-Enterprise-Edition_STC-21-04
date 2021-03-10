@@ -1,8 +1,5 @@
 package lesson03.task03;
 
-import lesson03.task03.PersonGeneratorWithBubbleSort;
-import lesson03.task03.PersonGeneratorWithInsertionSort;
-import lesson03.task03.PersonLinkedList;
 import lesson03.task03.model.Men;
 import lesson03.task03.model.Person;
 import lesson03.task03.model.Sex;
@@ -41,7 +38,7 @@ public class PersonGenerator {
 
     public static PersonGeneratorWithInsertionSort personListInsertionSort(int num) {
         Random rd = new Random();
-        PersonGeneratorWithInsertionSort men = new  PersonGeneratorWithInsertionSort();
+        PersonGeneratorWithInsertionSort men = new PersonGeneratorWithInsertionSort();
         for (int i = 0; i < num; i++) {
             int age = rd.nextInt(101);
 
@@ -56,4 +53,5 @@ public class PersonGenerator {
         }
         return men;
     }
+
 }
