@@ -3,10 +3,34 @@ package lesson03.task03;
 import lesson03.task03.model.Person;
 import org.w3c.dom.Node;
 
-public abstract class PersonLinkedList implements PersonList {
+public class PersonLinkedList implements PersonList {
     private Node first;
     private Node last;
-    private static int size = 0;
+    private int size = 0;
+
+    public Node getFirst() {
+        return first;
+    }
+
+    public Node getLast() {
+        return last;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setFirst(Node first) {
+        this.first = first;
+    }
+
+    public void setLast(Node last) {
+        this.last = last;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     @Override
     public Person get(int index) {
@@ -138,4 +162,5 @@ public abstract class PersonLinkedList implements PersonList {
             this.next = next;
         }
     }
+
 }
