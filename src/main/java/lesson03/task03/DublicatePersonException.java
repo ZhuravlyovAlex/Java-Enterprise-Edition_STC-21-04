@@ -1,4 +1,4 @@
-package lesson03.task03.exception;
+package lesson03.task03;
 
 /**
  * класс который выбрасывает пользовательское исключение при совпадении у объектов Person параментров name и age.

@@ -1,8 +1,6 @@
 package lesson03.task03;
 
-import lesson03.task03.model.Person;
-import lesson03.task03.model.PersonGenerator;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,19 +19,41 @@ import java.util.Scanner;
  */
 
 public class Main {
+
     private static int num;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DublicatePersonException {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите количество персон: ");
         num = sc.nextInt();
 
-        List <Person> people = PersonGenerator.personListSort(num);
+        // Генерация коллекции и сортировка по методу Bubble Sort
+        long start = System.currentTimeMillis();
+        PersonGeneratorWithBubbleSort people1 = PersonGenerator.personListBubbleSort(num);
+        people1.sort();
+        List< PersonGeneratorWithBubbleSort> men1 = Arrays.asList(people1);
 
-        for (Person person : people) {
+        for (PersonGeneratorWithBubbleSort person : men1) {
             System.out.println(person);
         }
+        long finish = System.currentTimeMillis();
 
+        System.out.println("Время выполнения сортировки по методу Bubble Sort: " + (finish - start) + "ms");
+
+        System.out.println();
+
+        // Генерация коллекции и сортировка по методу Insertion sort
+        start = System.currentTimeMillis();
+        PersonGeneratorWithInsertionSort people2 = PersonGenerator.personListInsertionSort(num);
+        people2.sort();
+        List< PersonGeneratorWithInsertionSort> men2 = Arrays.asList(people2);
+
+        for (PersonGeneratorWithInsertionSort person : men2) {
+            System.out.println(person);
+        }
+        finish = System.currentTimeMillis();
+
+        System.out.println("Время выполнения сортировки по методу Insertion sort: " + (finish - start) + "ms");
     }
 }
