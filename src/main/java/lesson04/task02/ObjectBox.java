@@ -1,26 +1,25 @@
 package lesson04.task02;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-public class ObjectBox implements ObjectList {
+public class ObjectBox<T> implements ObjectList<T> {
 
-    private Set<Object> list;
+    private Set<T> list;
 
     public ObjectBox() {
-        this.list  = new HashSet();
+        this.list = new HashSet();
     }
 
     @Override
-    public void addObject(Object object) {
+    public void addObject(T object) {
         if (!list.contains(object)) {
             list.add(object);
         }
     }
 
     @Override
-    public boolean deleteObject(Object object) {
+    public boolean deleteObject(T object) {
         if (list.contains(object)) {
             list.remove(object);
             return true;
@@ -30,8 +29,8 @@ public class ObjectBox implements ObjectList {
 
     @Override
     public void dump() {
-            System.out.println(list.toString());
-        }
+        System.out.println("ObjectBox: " + list.toString());
+    }
 
     @Override
     public String toString() {
@@ -42,8 +41,8 @@ public class ObjectBox implements ObjectList {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        ObjectBox objectBox = (ObjectBox) object;
-        return Objects.equals(list, objectBox.list);
+        ObjectBox<?> objectBox = (ObjectBox<?>) object;
+        return list.equals(objectBox.list);
     }
 
     @Override

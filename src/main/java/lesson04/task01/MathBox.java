@@ -1,5 +1,7 @@
 package lesson04.task01;
 
+import lesson04.task02.ObjectBox;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
  * Copyright Журавлёв Алексей
  */
 
-public class MathBox<T extends Number> {
+public class MathBox<T extends Number> extends ObjectBox<Number> {
 
     private Set<Number> list;
 
@@ -31,12 +33,6 @@ public class MathBox<T extends Number> {
         }
     }
 
-    public void getList() {
-        for (Number number : list) {
-            System.out.println(number.doubleValue());
-        }
-    }
-
     public double summator() { // Метод возвращает сумму всех элементов коллекции.
         double result = 0;
         for (Number element : list) {
@@ -46,7 +42,7 @@ public class MathBox<T extends Number> {
     }
 
     public void splitter(Number div) { // Метод выполняет деление всех элементов коллекции поочередно на число передоваемое ввиде аргумента.
-        Set<Number> result = new HashSet<Number>();
+        Set<Number> result = new HashSet<>();
         for (Number element : list) {
             double el = element.doubleValue() / div.doubleValue();
             double d = (double)Math.round(el * 10) / 10.0; // Округляем до одного знака после запятой
@@ -56,7 +52,7 @@ public class MathBox<T extends Number> {
     }
 
     public void remove(Integer num) { // Метод который удаляет значение из коллекции если оно соответствует введённому аргументу
-        list.remove((Number) num);
+        list.remove(num);
     }
 
     @Override

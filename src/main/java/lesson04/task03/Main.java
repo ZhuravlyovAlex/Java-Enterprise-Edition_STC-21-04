@@ -1,4 +1,7 @@
-package lesson04.task01;
+package lesson04.task03;
+
+import lesson04.task01.DublicateException;
+import lesson04.task01.MathBox;
 
 /**
  * Факультативный класс предназначенный для демонстрации работы класса MathBox
@@ -31,10 +34,26 @@ public class Main {
         System.out.println("результат отработки метода: splitter с делителем " + div);
         el.splitter(div);
         System.out.println(el.toString());
+        System.out.println();
 
+        System.out.println("результат отработки метода addObject() (поочередно добавляем: int, char, String, MathBox)");
+        System.out.println("для вывода на экран используем метод dump()");
 
+        el.addObject(54);
+        el.dump();
 
+        el.addObject('\u0462');
+        el.dump();
 
+        el.addObject("Hola, Innopolis!");
+        el.dump();
+
+        el.addObject(el);
+        el.dump();
+        System.out.println();
+        System.out.println("результат отработки метода deleteObject(). Удаляем объект MathBox");
+        el.deleteObject(el);
+        el.dump();
 
     }
 }

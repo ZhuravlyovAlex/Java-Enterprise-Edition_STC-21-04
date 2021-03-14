@@ -1,10 +1,10 @@
 package lesson04.task02;
 
-public interface ObjectList {
+public interface ObjectList<T> {
 
-    void addObject(Object o);
+    void addObject(T object);
 
-    boolean deleteObject(Object o);
+    boolean deleteObject(T object);
 
     void dump();
 }
