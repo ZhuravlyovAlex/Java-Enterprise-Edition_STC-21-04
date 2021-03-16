@@ -1,8 +1,9 @@
-package lesson04.task01;
+package lesson04.task03;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Класс конструктор которого на вход получает массив Number. Элементы не могут повторяться. Элементы массива внутри объекта раскладываются в коллекцию HashSet.
@@ -15,7 +16,7 @@ import java.util.Set;
  * Copyright Журавлёв Алексей
  */
 
-public class MathBox<T extends Number> {
+public class MathBox<T extends Number> extends ObjectBox<T> {
 
     private Set<Number> set;
 
@@ -27,8 +28,8 @@ public class MathBox<T extends Number> {
                 set.add(num);
             } else {
                 try {
-                    throw new DublicateException();
-                } catch (DublicateException e) {
+                    throw new lesson04.task01.DublicateException();
+                } catch (lesson04.task01.DublicateException e) {
                     System.out.println("Ошибка. Вы пытаетесь добавить существующее значение.");
                 }
             }
@@ -47,7 +48,7 @@ public class MathBox<T extends Number> {
         Set<Number> result = new HashSet<>();
         for (Number element : set) {
             double el = element.doubleValue() / div.doubleValue();
-            double d = (double) Math.round(el * 10) / 10.0; // Округляем до одного знака после запятой
+            double d = (double)Math.round(el * 10) / 10.0; // Округляем до одного знака после запятой
             result.add(d);
         }
         set = result;
@@ -56,6 +57,26 @@ public class MathBox<T extends Number> {
     public void remove(Integer num) { // Метод который удаляет значение из коллекции если оно соответствует введённому аргументу
         set.remove(num);
     }
+
+    @Override
+    public void addObject(T object) {
+        if(object instanceof Number) {
+            super.addObject(object);
+        }else{
+            throw new NoNumberClassException();
+        }
+    }
+
+    @Override
+    public boolean deleteObject(T object) {
+        return super.deleteObject(object);
+    }
+
+    @Override
+    public void dump() {
+        super.dump();
+    }
+
 
     @Override
     public String toString() {

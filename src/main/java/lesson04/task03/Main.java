@@ -1,7 +1,7 @@
 package lesson04.task03;
 
-import lesson04.task01.DublicateException;
-import lesson04.task01.MathBox;
+
+import lesson04.task02.ObjectBox;
 
 /**
  * Факультативный класс предназначенный для демонстрации работы класса MathBox
@@ -10,16 +10,17 @@ import lesson04.task01.MathBox;
  * Copyright Журавлёв Алексей
  */
 public class Main {
-    public static void main(String[] args) throws DublicateException {
+    public static void main(String[] args) throws DublicateException, ClassCastException {
 
-        Number[] array = {5,2,20,7,8};
-        MathBox el = new MathBox(array);
+        Number[] numbers = new Number[]{(byte) 13, (short) 230, 52, 23f, 3.1, 555l, 52};
+        MathBox el = new MathBox(numbers);
+        System.out.println();
 
-        System.out.println("Наша колекция");
+        System.out.println("наша колекция");
         System.out.println(el.toString());
         System.out.println();
 
-        int rem = 8;
+        int rem = 230;
         System.out.println("результат отработки метода: remove (удаляем число: " + rem + ")");
         el.remove(rem);
         System.out.println(el.toString());
@@ -36,24 +37,34 @@ public class Main {
         System.out.println(el.toString());
         System.out.println();
 
-        System.out.println("результат отработки метода addObject() (поочередно добавляем: int, char, String, MathBox)");
-        System.out.println("для вывода на экран используем метод dump()");
-
-        el.addObject(54);
-        el.dump();
-
-        el.addObject('\u0462');
-        el.dump();
-
-        el.addObject("Hola, Innopolis!");
-        el.dump();
-
-        el.addObject(el);
-        el.dump();
+        Object[] objects = new Object[]{"string", new Integer(23), new Float(2.5f), new Double(23.3), new Character('A')};
+        lesson04.task02.ObjectBox objectBox = new ObjectBox<>();
         System.out.println();
-        System.out.println("результат отработки метода deleteObject(). Удаляем объект MathBox");
-        el.deleteObject(el);
-        el.dump();
+        System.out.println("результат отработки метода addObject() (через цикл добавляем в objectBox объекты: String, Integer, Float, Double, Character)");
+        System.out.println("для вывода на экран используем метод dump()");
+        System.out.println();
 
+        for (Object object : objects) {
+            objectBox.addObject(object);
+        }
+        objectBox.dump();
+        System.out.println();
+
+        System.out.println("результат отработки метода deleteObject(). Удаляем объект Character");
+        objectBox.deleteObject('A');
+        objectBox.dump();
+        System.out.println();
+
+        System.out.println("добавляем MathBox в ObjectBox");
+        objectBox.addObject(el);
+        objectBox.dump();
+        System.out.println();
+
+        System.out.println("пытаемся добавить ObjectBox в MathBox");
+        try {
+            el.addObject (objectBox);
+        } catch (NoNumberClassException e) {
+            System.out.println("Ошибка. Нельзя добавить ObjectBox в MathBox ");
+        }
     }
 }

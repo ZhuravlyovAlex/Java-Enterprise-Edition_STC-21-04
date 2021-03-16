@@ -1,4 +1,4 @@
-package lesson04.task02;
+package lesson04.task03;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,14 +12,14 @@ public class ObjectBox<T> implements ObjectList<T> {
     }
 
     @Override
-    public void addObject(Object object) {
+    public void addObject(T object) {
         if (!set.contains(object)) {
             set.add(object);
         }
     }
 
     @Override
-    public boolean deleteObject(Object object) {
+    public boolean deleteObject(T object) {
         if (set.contains(object)) {
             set.remove(object);
             return true;
