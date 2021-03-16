@@ -62,8 +62,8 @@ public class Main {
 
         System.out.println("пытаемся добавить ObjectBox в MathBox");
         try {
-            el.addObject (objectBox);
-        } catch (NoNumberClassException e) {
+            el.addObject(objectBox);
+        } catch (ClassCastException e) {
             System.out.println("Ошибка. Нельзя добавить ObjectBox в MathBox ");
         }
     }
