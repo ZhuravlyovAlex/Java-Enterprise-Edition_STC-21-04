@@ -1,6 +1,8 @@
 package lesson03.task03;
 
-import java.util.Scanner;
+import lesson03.task03.model.Person;
+
+import java.util.List;
 
 /**
  * Приложение генерирующее исходный массив (10000 элементов и более) объектов Person, характеризуется полями age (возраст, целое число 0-100),
@@ -18,40 +20,35 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static int num;
-
     public static void main(String[] args) throws DublicatePersonException {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Введите количество персон: ");
-        num = sc.nextInt();
+        PersonGeneratorWithBubbleSort people1 = new PersonGeneratorWithBubbleSort();
+        PersonGeneratorWithInsertionSort people2 = new PersonGeneratorWithInsertionSort();
+        List list = PersonGenerator.personListSort(10);
 
-        // Генерация коллекции и сортировка по методу Bubble Sort
-        long start = System.currentTimeMillis();
-        PersonGeneratorWithBubbleSort people1 = PersonGenerator.personListBubbleSort(num);
-        people1.sort();
+        for (Object person : list) {
+//            if (!people1.contains(person)) {
+                people1.add((Person) person);
+                people2.add((Person) person);
+            }
 
-        for (int i = 0; i < people1.size(); i++) {
-            System.out.println(people1.getNode(i).getValue());
+            // Генерация коллекции и сортировка по методу Bubble Sort
+            long start = System.currentTimeMillis();
+            people1.sort();
+            for (int i = 0; i < people1.size(); i++) {
+                System.out.println(people1.getNode(i).getValue());
+            }
+            long finish = System.currentTimeMillis();
+            System.out.println("Время выполнения сортировки по методу Bubble Sort: " + (finish - start) + "ms");
+            System.out.println();
+
+            // Генерация коллекции и сортировка по методу Insertion sort
+            start = System.currentTimeMillis();
+            people2.sort();
+            for (int i = 0; i < people2.size(); i++) {
+                System.out.println(people2.getNode(i).getValue());
+            }
+            finish = System.currentTimeMillis();
+            System.out.println("Время выполнения сортировки по методу Insertion sort: " + (finish - start) + "ms");
         }
-
-        long finish = System.currentTimeMillis();
-
-        System.out.println("Время выполнения сортировки по методу Bubble Sort: " + (finish - start) + "ms");
-
-        System.out.println();
-
-        // Генерация коллекции и сортировка по методу Insertion sort
-        start = System.currentTimeMillis();
-        PersonGeneratorWithInsertionSort people2 = PersonGenerator.personListInsertionSort(num);
-        people2.sort();
-
-        for (int i = 0; i < people2.size(); i++) {
-            System.out.println(people2.getNode(i).getValue());
-        }
-
-        finish = System.currentTimeMillis();
-
-        System.out.println("Время выполнения сортировки по методу Insertion sort: " + (finish - start) + "ms");
     }
-}

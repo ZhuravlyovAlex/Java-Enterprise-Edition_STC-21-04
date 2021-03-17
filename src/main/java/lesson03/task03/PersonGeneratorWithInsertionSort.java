@@ -6,6 +6,7 @@ public class PersonGeneratorWithInsertionSort extends PersonLinkedList {
 
     @Override
     public void sort() throws DublicatePersonException {
+
     }
 }
 

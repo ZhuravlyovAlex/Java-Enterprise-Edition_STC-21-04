@@ -1,57 +1,51 @@
 package lesson03.task03;
 
-import lesson03.task03.model.Men;
 import lesson03.task03.model.Person;
 import lesson03.task03.model.Sex;
-import lesson03.task03.model.Women;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * утилитный класс заполняющий список рандомными объектами Person
  * <p>
- * version 1.0
+ * version 2.0
  * Copyright Журавлёв Алексей
  */
 
 public class PersonGenerator {
 
-    private static String name;
+    private static Random random = new Random();
 
-    public static PersonGeneratorWithBubbleSort personListBubbleSort(int num) {
-        Random rd = new Random();
-        PersonGeneratorWithBubbleSort men = new PersonGeneratorWithBubbleSort();
+    public static List personListSort(int num) { // метод для генерации рандомного объекта Person
+        String name;
+
+        List list = new ArrayList();
         for (int i = 0; i < num; i++) {
-            int age = rd.nextInt(101);
+            int age = random.nextInt(101);
 
             Sex sex = Sex.randomSex();
             if (sex.equals(Sex.MAN)) {
-                name = Men.randomMen().toString();
+                name = randomPerson(sex);
             } else {
-                name = Women.randomWomen().toString();
+                name = randomPerson(sex);
             }
             Person person = new Person(age, sex, name);
-            men.add(person);
+            list.add(person);
         }
-        return men;
+        return list;
     }
 
-    public static PersonGeneratorWithInsertionSort personListInsertionSort(int num) {
-        Random rd = new Random();
-        PersonGeneratorWithInsertionSort men = new PersonGeneratorWithInsertionSort();
-        for (int i = 0; i < num; i++) {
-            int age = rd.nextInt(101);
+    public static String randomPerson(Sex sex) { // метод возращающий рандомное значение имени в зависимости от пола
+        String[] menRandom = new String[]{"Марсель", "Иван", "Александр", "Кирилл", "Пётр", "Борис", "Сергей", "Василь", "Дмитрий", "Михаил"};
+        String[] womenRandom = new String[]{"Виктория", "Иванка", "Александра", "Татьяна", "Василиса", "Елена", "Галина", "Светлана", "Юлия", "Антонина"};
 
-            Sex sex = Sex.randomSex();
-            if (sex.equals(Sex.MAN)) {
-                name = Men.randomMen().toString();
-            } else {
-                name = Women.randomWomen().toString();
-            }
-            Person person = new Person(age, sex, name);
-            men.add(person);
+        if (sex.equals(Sex.MAN)) {
+            String ran = menRandom[random.nextInt(menRandom.length)];
+            return ran;
+        } else {
+            return womenRandom[random.nextInt(womenRandom.length)];
         }
-        return men;
     }
-
 }
+

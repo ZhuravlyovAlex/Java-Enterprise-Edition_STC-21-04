@@ -1,5 +1,7 @@
 package lesson03.task03.model;
 
+import java.util.Comparator;
+
 /**
  * класс объекта Person
  * <p>
@@ -7,7 +9,7 @@ package lesson03.task03.model;
  * Copyright Журавлёв Алексей
  */
 
-public class Person implements Comparable<Person> {
+public class Person implements Comparator<Person> {
     private int age;
     private Sex sex;
     private String name;
@@ -30,55 +32,44 @@ public class Person implements Comparable<Person> {
         return name;
     }
 
-    public void setAge(int age) {
-        if (age > 0 || age <= 100) {
-            this.age = age;
-        } else {
-            System.out.println("Вы ввели некоректное значение возроста");
-        }
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
         return "Person: { " + name + ", " + age + ", " + sex + " }";
     }
 
-    @Override
-    public int compareTo(Person person) {
-        if (this.equals(person)) {  // момент возникновения ошибки DublicatePersonException
-            return 0;
-        }
-        if ((this.getSex() == Sex.MAN) && (person.getSex() == Sex.WOMAN)) { // сравниваем по половой пренадлежности
-            return -1;
-        } else if ((this.getAge() > person.getAge()) && (this.getSex() == person.getSex())) { // сравниваем по возрасту
-            return -1;
-        }
-        if ((this.getAge() >= person.getAge()) && (this.getSex() == person.getSex()) && (this.getName().compareTo(person.getName()) <= -1)) { // сравниваем по алфавиту {
-            return -1;
-        }
-        return 1;
+    public int compare(Person a, Person b) {
+        return Comparator
+                .comparing(Person::getSex)
+                .thenComparing(Person::getAge)
+                .thenComparing(Person::getName)
+                .compare(a, b);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        if (age != person.age) {
-            return false;
+    public static class PersonSexComparator implements Comparator<Person> {
+        public int compare(Person a, Person b) {
+            if ((a.getSex() == Sex.MAN) && (b.getSex() == Sex.WOMAN))
+                return 1;
+            else if ((a.getSex() == Sex.WOMAN) && (b.getSex() == Sex.MAN))
+                return -1;
+            else
+                return 0;
         }
-        if (sex != person.sex) {
-            return false;
-        }
-        return name.equals(person.name);
     }
 
+    public static class PersonAgeComparator implements Comparator<Person> {
+        public int compare(Person a, Person b) {
+            if (a.getAge() > b.getAge())
+                return 1;
+            else if (a.getAge() < b.getAge())
+                return -1;
+            else
+                return 0;
+        }
+    }
+
+    public static class PersonNameComparator implements Comparator<Person> {
+        public int compare(Person a, Person b) {
+            return a.getName().compareTo(b.getName());
+        }
+    }
 }

@@ -126,6 +126,13 @@ public class PersonLinkedList implements PersonList {
         return node;
     }
 
+    public boolean contains(Object person) {
+        if (this.equals(person)) {
+            return true;
+        }
+        return false;
+    }
+
     static class Node {
         private Node previous;
         private Person value;
@@ -137,6 +144,18 @@ public class PersonLinkedList implements PersonList {
 
         public Person getValue() {
             return value;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setPrevious(Node previous) {
+            this.previous = previous;
+        }
+
+        public void setValue(Person value) {
+            this.value = value;
         }
 
         public void setNext(Node next) {
