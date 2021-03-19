@@ -2,6 +2,7 @@ package lesson03.task03;
 
 import lesson03.task03.model.Person;
 import lesson03.task03.model.Sex;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
  * Copyright Журавлёв Алексей
  */
 
-public class PersonGenerator {
+public class PersonGenerator extends PersonArrayList {
 
     private static Random random = new Random();
 
@@ -31,7 +32,15 @@ public class PersonGenerator {
                 name = randomPerson(sex);
             }
             Person person = new Person(age, sex, name);
-            list.add(person);
+            if (!list.contains(person)) {
+                list.add(person);
+            } else {
+                try {
+                    throw new DublicatePersonException();
+                } catch (DublicatePersonException e) {
+                    System.out.println("Ошибка! Вы ввели существующую персону.");
+                }
+            }
         }
         return list;
     }
@@ -48,4 +57,3 @@ public class PersonGenerator {
         }
     }
 }
-

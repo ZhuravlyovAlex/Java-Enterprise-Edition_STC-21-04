@@ -17,5 +17,5 @@ public interface PersonList {
 
     void clear();
 
-    void sort() throws DublicatePersonException;
+    void sort();
 }

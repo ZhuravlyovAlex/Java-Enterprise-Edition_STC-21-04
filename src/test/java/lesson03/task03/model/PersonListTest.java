@@ -1,65 +1,64 @@
 package lesson03.task03.model;
 
+import lesson03.task03.PersonArrayList;
 import lesson03.task03.PersonGeneratorWithBubbleSort;
-import lesson03.task03.PersonLinkedList;
-import lesson03.task03.PersonList;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PersonListTest {
-    private PersonList personList;
+    private PersonArrayList personArrayList;
 
     @Before
     public void setUp() throws Exception {
-        personList = new PersonGeneratorWithBubbleSort(); //new PersonLinkedList();
+        personArrayList = new PersonArrayList();
         for (int i = 0; i < 100; i++) {
-            personList.add(new Person(30, Sex.MAN,"Борис"));
+            personArrayList.add(new Person(30, Sex.MAN,"Борис"));
         }
     }
 
     @Test
     public void whenAdded100ElementsThenSizeMustBe100() {
-        assertEquals(100, personList.size());
+        assertEquals(100, personArrayList.size());
     }
 
     @Test
     public void whenElementRemovedByIndexThenSizeMustBeDecreased() {
-        assertTrue(personList.removeAt(5));
-        assertEquals(99, personList.size());
+        assertTrue(personArrayList.removeAt(5));
+        assertEquals(99, personArrayList.size());
     }
 
     @Test
     public void whenElementRemovedThenSizeMustBeDecreased() {
         Person person = new Person(30, Sex.MAN, "Борис");
-        personList.add(person);
-        assertEquals(101, personList.size());
-        assertTrue(personList.remove(person));
-        assertEquals(100, personList.size());
+        personArrayList.add(person);
+        assertEquals(101, personArrayList.size());
+        assertTrue(personArrayList.remove(person));
+        assertEquals(100, personArrayList.size());
     }
 
     @Test
     public void whenNonExistentElementRemovedThenReturnFalse() {
-        Person person = new Person(30,Sex.WOMAN, "Борис");
-        assertFalse(personList.remove(person));
-        assertEquals(100, personList.size());
+        Person person = new Person(30,Sex.MAN,"Aндрей");
+        assertFalse(personArrayList.remove(person));
+        assertEquals(100, personArrayList.size());
     }
 
     @Test
     public void whenListClearedThenSizeMustBe0() {
-        personList.clear();
-        assertEquals(0, personList.size());
+        personArrayList.clear();
+        assertEquals(0, personArrayList.size());
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void whenIndexOutOfBoundsThenThrownException() {
-        personList.get(100);
+        personArrayList.get(100);
     }
 
     @Test
     public void methodGetReturnedRightValue() {
-        Person person = personList.get(0);
+        Person person = personArrayList.get(0);
         assertEquals("Борис", person.getName());
     }
 }

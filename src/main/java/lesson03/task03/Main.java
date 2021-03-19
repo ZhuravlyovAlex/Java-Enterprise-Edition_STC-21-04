@@ -1,7 +1,6 @@
 package lesson03.task03;
 
 import lesson03.task03.model.Person;
-
 import java.util.List;
 
 /**
@@ -24,10 +23,9 @@ public class Main {
 
         PersonGeneratorWithBubbleSort people1 = new PersonGeneratorWithBubbleSort();
         PersonGeneratorWithInsertionSort people2 = new PersonGeneratorWithInsertionSort();
-        List list = PersonGenerator.personListSort(10);
+        List list = PersonGenerator.personListSort(100);
 
         for (Object person : list) {
-//            if (!people1.contains(person)) {
                 people1.add((Person) person);
                 people2.add((Person) person);
             }
@@ -36,7 +34,7 @@ public class Main {
             long start = System.currentTimeMillis();
             people1.sort();
             for (int i = 0; i < people1.size(); i++) {
-                System.out.println(people1.getNode(i).getValue());
+                System.out.println(people1.get(i));
             }
             long finish = System.currentTimeMillis();
             System.out.println("Время выполнения сортировки по методу Bubble Sort: " + (finish - start) + "ms");
@@ -46,7 +44,7 @@ public class Main {
             start = System.currentTimeMillis();
             people2.sort();
             for (int i = 0; i < people2.size(); i++) {
-                System.out.println(people2.getNode(i).getValue());
+                System.out.println(people2.get(i));
             }
             finish = System.currentTimeMillis();
             System.out.println("Время выполнения сортировки по методу Insertion sort: " + (finish - start) + "ms");

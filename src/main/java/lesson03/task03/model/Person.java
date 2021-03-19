@@ -1,6 +1,7 @@
 package lesson03.task03.model;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * класс объекта Person
@@ -35,6 +36,19 @@ public class Person implements Comparator<Person> {
     @Override
     public String toString() {
         return "Person: { " + name + ", " + age + ", " + sex + " }";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null ||!object.getClass().equals(Person.class)) return false;
+        Person person = (Person) object;
+        return age == person.age && this.name.equals(person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(age, name);
     }
 
     public int compare(Person a, Person b) {
