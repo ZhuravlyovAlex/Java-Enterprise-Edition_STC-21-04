@@ -1,8 +1,6 @@
 package lesson04.task03;
 
 
-import lesson04.task02.ObjectBox;
-
 /**
  * Факультативный класс предназначенный для демонстрации работы класса MathBox
  * <p>
@@ -11,19 +9,27 @@ import lesson04.task02.ObjectBox;
  */
 public class Main {
     public static void main(String[] args) throws DublicateException, ClassCastException {
-
+        System.out.println();
+        System.out.println("Подаём на вход массив: {(byte) 13, (short) 230, 52, 23f, 3.1, 555l, 52}");
+        System.out.println("Попытка спровоцировать ошибку DublicateException. Пытаемся передать на вход два одинаковых элемента со значением 52");
+        System.out.println();
         Number[] numbers = new Number[]{(byte) 13, (short) 230, 52, 23f, 3.1, 555l, 52};
         MathBox el = new MathBox(numbers);
-        System.out.println();
-
-        System.out.println("наша колекция");
         System.out.println(el.toString());
-        System.out.println();
 
-        int rem = 230;
-        System.out.println("результат отработки метода: remove (удаляем число: " + rem + ")");
-        el.remove(rem);
-        System.out.println(el.toString());
+        System.out.println();
+        System.out.println("Добавляем в MathBox объект Integer со значением 8 и Double со значением 13, используя метод addObject()");
+        Integer a = 8;
+        Double b = 13.0;
+        el.addObject(a);
+        el.addObject(b);
+        el.dump();
+
+        System.out.println();
+        System.out.println("Удаляем объект Integer со значением 8 через метод remove(), а объект Double со значением 13 используя метод deleteObject() ");
+        el.remove(a);
+        el.deleteObject(b);
+        el.dump();
         System.out.println();
 
         System.out.println("результат отработки метода: summator");
@@ -35,12 +41,11 @@ public class Main {
         System.out.println("результат отработки метода: splitter с делителем " + div);
         el.splitter(div);
         System.out.println(el.toString());
-        System.out.println();
 
         Object[] objects = new Object[]{"string", new Integer(23), new Float(2.5f), new Double(23.3), new Character('A')};
-        lesson04.task02.ObjectBox objectBox = new ObjectBox<>();
+        ObjectBox objectBox = new ObjectBox<>();
         System.out.println();
-        System.out.println("результат отработки метода addObject() (через цикл добавляем в objectBox объекты: String, Integer, Float, Double, Character)");
+        System.out.println("Демонстрируем работоспособность класса ObjectBox (через цикл добавляем в objectBox объекты: String, Integer, Float, Double, Character)");
         System.out.println("для вывода на экран используем метод dump()");
         System.out.println();
 

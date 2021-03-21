@@ -9,7 +9,7 @@ package lesson04.task01;
 public class Main {
     public static void main(String[] args) throws DublicateException {
         System.out.println();
-        System.out.println("Попытка спровацировать ошибку DublicateException");
+        System.out.println("Попытка спровоцировать ошибку DublicateException");
 
         Number[] numbers = new Number[]{(byte) 13, (short) 230, 52, 23f, 3.1, 555l, 52};
         MathBox el = new MathBox(numbers);
@@ -19,9 +19,17 @@ public class Main {
         System.out.println(el.toString());
         System.out.println();
 
-        int rem = 230;
-        System.out.println("результат отработки метода: remove (удаляем число: " + rem + ")");
-        el.remove(rem);
+
+        System.out.println("результат отработки метода: remove (удаляем объект Integer)");
+        for (Number remInt : numbers ) {  // Пытаемся удалить из коллекции раннее добавленный элемент Integer.
+            if (remInt.getClass() == Integer.class){
+                Integer rem = (Integer) remInt;
+                el.remove(rem);
+            }
+        }
+
+
+
         System.out.println(el.toString());
         System.out.println();
 

@@ -53,7 +53,7 @@ public class MathBox<T extends Number> {
         set = result;
     }
 
-    public void remove(Integer num) { // Метод который удаляет значение из коллекции если оно соответствует введённому аргументу
+    public void remove (Integer num) { // Метод который удаляет значение из коллекции если оно соответствует введённому аргументу
         set.remove(num);
     }
 

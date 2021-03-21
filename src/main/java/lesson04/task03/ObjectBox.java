@@ -5,13 +5,8 @@ import java.util.Set;
 
 public class ObjectBox<T> implements ObjectList<T> {
 
-    private Set<Object> set;
+    public Set<T> set = new HashSet();
 
-    public ObjectBox() {
-        this.set = new HashSet();
-    }
-
-    @Override
     public void addObject(T object) {
         if (!set.contains(object)) {
             set.add(object);
@@ -19,12 +14,10 @@ public class ObjectBox<T> implements ObjectList<T> {
     }
 
     @Override
-    public boolean deleteObject(T object) {
+    public void deleteObject(T object) {
         if (set.contains(object)) {
             set.remove(object);
-            return true;
         }
-        return false;
     }
 
     @Override

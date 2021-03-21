@@ -4,7 +4,7 @@ public interface ObjectList<T> {
 
     void addObject(T object);
 
-    boolean deleteObject(T object);
+    void deleteObject(T object);
 
     void dump();
 }

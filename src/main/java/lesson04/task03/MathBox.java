@@ -1,6 +1,7 @@
 package lesson04.task03;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,12 +17,8 @@ import java.util.Set;
  * Copyright Журавлёв Алексей
  */
 
-public class MathBox<T extends Number> extends ObjectBox<T> {
-
-    private Set<Number> set;
-
+public class MathBox<T extends Number, object> extends ObjectBox<Number> {
     public MathBox(T[] number) throws DublicateException {
-        set = new HashSet<>();
 
         for (T num : number) {
             if (!set.contains(num)) {
@@ -58,23 +55,22 @@ public class MathBox<T extends Number> extends ObjectBox<T> {
         set.remove(num);
     }
 
+
     @Override
-    public void addObject(T object) throws ClassCastException {
-        if (object instanceof Number) {
-            this.addObject(object);
-        }
+    public void addObject(Number object) {
+        super.addObject(object);
+
     }
 
     @Override
-    public boolean deleteObject(T object) {
-        return super.deleteObject(object);
+    public void deleteObject(Number object) {
+        super.deleteObject(object);
     }
 
     @Override
     public void dump() {
-        super.dump();
+        System.out.println("MathBox: " + set.toString());
     }
-
 
     @Override
     public String toString() {
@@ -85,7 +81,7 @@ public class MathBox<T extends Number> extends ObjectBox<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MathBox<?> mathBox = (MathBox<?>) o;
+        MathBox mathBox = (MathBox) o;
         return Objects.equals(set, mathBox.set);
     }
 
@@ -95,4 +91,5 @@ public class MathBox<T extends Number> extends ObjectBox<T> {
         result = 31 * result + (set != null ? set.hashCode() : 0);
         return result;
     }
+
 }
