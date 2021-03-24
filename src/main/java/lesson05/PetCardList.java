@@ -1,5 +1,6 @@
 package lesson05;
 
+import lesson05.model.Person;
 import lesson05.model.Pet;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public class PetCardList<T extends Pet> {
             try {
                 throw new PetDuplicateException();
             } catch (PetDuplicateException err) {
-                System.out.println("Ошибка! В картотеке уже имеется данный питомц. \n");
+                System.out.println("Ошибка! В картотеке уже имеется данный питомец. \n");
             }
         } else {
             pets.add(t);
@@ -46,9 +47,27 @@ public class PetCardList<T extends Pet> {
         T pet = (T) petsId.get(id);
         pets.remove(pet);
         pet.setWeight(weight);
-        pets.add((T) pet);
+        addCollect(pet);
     }
 
+    public void petUpdate(int id, String name) { // изменение клички животного по его идентификатору.
+        T pet = (T) petsId.get(id);
+        pets.remove(pet);
+        pet.setName(name);
+        addCollect(pet);
+    }
+
+    public void petUpdate(int id, Person owner) { // изменение владельца животного по его идентификатору.
+        T pet = (T) petsId.get(id);
+        pets.remove(pet);
+        pet.setOwner(owner);
+        addCollect(pet);
+    }
+    private void addCollect(T pet){ // метод добавляющий сделанные в petUpdate в коллекции.
+        pets.add((T) pet);
+        petsMap.put(pet.getName(), pet);
+        petsId.put(pet.getId(), pet);
+    }
 
     public void sortView() { // вывод на экран списка животных в отсортированном порядке. Поля для сортировки –  хозяин, кличка животного, вес.
         pets.sort(petComparator);

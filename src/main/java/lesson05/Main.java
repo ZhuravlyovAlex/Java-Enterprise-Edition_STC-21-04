@@ -46,5 +46,18 @@ public class Main {
         System.out.println("изменение данных животного по его идентификатору (у питомца по кличке Граф изменим вес с 8.0 на 8.7");
         petCardList.petUpdate(6, 8.7);
         petCardList.sortView();
+        System.out.println();
+        petCardList.search("Граф");
+
+        System.out.println();
+        System.out.println("изменение клички животного по его идентификатору (у питомца по кличке Граф изменим вес Граф на Шариков");
+        petCardList.petUpdate(6, "Шариков");
+        petCardList.sortView();
+        System.out.println();
+        System.out.println("изменение данных о владельце животного по его идентификатору (питомц по кличке Шариков переехал от Влады к  Яне");
+        petCardList.petUpdate(6,yana);
+        petCardList.sortView();
+        System.out.println();
+        petCardList.search("Шариков");
     }
 }
