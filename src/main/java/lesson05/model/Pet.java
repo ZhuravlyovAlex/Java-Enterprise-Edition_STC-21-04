@@ -1,21 +1,17 @@
 package lesson05.model;
 
-public class Pet {
+import java.util.Comparator;
+
+public abstract class Pet implements Comparator<Pet> {
     private int id;
-    String name;
-    Person owner;
-    double weight;
+    private String name;
+    private Person owner;
+    private double weight;
 
     public Pet(int id, String name, Person owner, double weight) {
         this.id = id;
         this.name = name;
         this.owner = owner;
-        this.weight = weight;
-    }
-
-    public Pet(int id, String name, double weight) {
-        this.id = id;
-        this.name = name;
         this.weight = weight;
     }
 
@@ -44,15 +40,50 @@ public class Pet {
     }
 
     public double getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public void setWeight(double weight) {
         this.weight = weight;
     }
 
+
     @Override
     public String toString() {
-        return "Pet{" + "id=" + id + ", name='" + name + '\'' + ", owner=" + owner + ", weight=" + weight + '}';
+        return "Питомец { id=" + id + ", кличка: " + name + '\'' + ", владелец: " + owner + ", вес: " + weight + '}';
+    }
+
+    @Override
+    public int compare(Pet a, Pet b) {
+        return Comparator
+                .comparing(Pet::getOwner)
+                .thenComparing(Pet::getName)
+                .thenComparing(Pet::getWeight)
+                .compare(a, b);
+    }
+
+    public static class PetOwnerComparator implements Comparator<Pet> {
+        public int compare(Pet a, Pet b) {
+            return a.getOwner().getName().compareTo(b.getOwner().getName());
+        }
+    }
+
+    public static class PetNameComparator implements Comparator<Pet> {
+        public int compare(Pet a, Pet b) {
+            return a.getName().compareTo(b.getName());
+        }
+    }
+
+    public static class PetWeightComparator implements Comparator<Pet> {
+        public int compare(Pet a, Pet b) {
+            if (a.getWeight() > b.getWeight()) {
+                return 1;
+            } else if (a.getWeight() < b.getWeight()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 }
+

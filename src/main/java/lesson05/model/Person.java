@@ -1,13 +1,9 @@
 package lesson05.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class Person {
+public class Person implements Comparable<Person> {
     private String name;
     private int age;
     private Sex sex;
-    private Set<Pet> pet = new HashSet<>();
 
     public Person(String name, int age, Sex sex) {
         this.name = name;
@@ -15,4 +11,24 @@ public class Person {
         this.sex = sex;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "имя: " + name + '\'' +
+                ", возраст: " + age +
+                ", пол: " + sex +
+                " }";
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        if (name.compareTo(o.getName()) < 0) {
+            return -1;
+        }
+        return 0;
+    }
 }
