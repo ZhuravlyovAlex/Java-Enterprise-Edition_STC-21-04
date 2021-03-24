@@ -63,7 +63,7 @@ public class PetCardList<T extends Pet> {
         pet.setOwner(owner);
         addCollect(pet);
     }
-    private void addCollect(T pet){ // метод добавляющий сделанные в petUpdate в коллекции.
+    private void addCollect(T pet){ // метод добавляющий в коллекции сделанные в petUpdate изменения
         pets.add((T) pet);
         petsMap.put(pet.getName(), pet);
         petsId.put(pet.getId(), pet);
