@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class TextConverter {
 
     public static void main(String[] args) {
+        // создаем входящие и исходящие файлы / папки
         File directory = new File("textConverter");
         directory.mkdir();
         File fileUtf8 = new File(directory, "fileUtf8.txt");
@@ -25,6 +26,7 @@ public class TextConverter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // считываем данные из файла в кодировке UTF-8
         StringBuilder result = new StringBuilder();
         try (Reader reader = new InputStreamReader(new FileInputStream(fileUtf8))) {
             int a = reader.read();
@@ -36,7 +38,7 @@ public class TextConverter {
                 Exception e) {
             e.printStackTrace();
         }
-
+        // выводим данные в файл в кодировке UTF-16
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(fileUtf16), StandardCharsets.UTF_16)) {
             writer.write(result.toString());
         } catch (Exception e) {
