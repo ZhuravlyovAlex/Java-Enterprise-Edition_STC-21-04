@@ -64,15 +64,14 @@ public class TxtGenerator {
      * <p>
      * Слово состоит из 1<=n2<=15 латинских букв
      */
-    public StringBuilder getWord() {
+    public String getWord() {
         StringBuilder words = new StringBuilder();
-        int n2 = rd.nextInt(15);
+        int n2 = rd.nextInt(14) + 1;
         for (int i = 0; i < n2; i++) {
             words.append((char) (rd.nextInt((122 - 97) + 1) + 'a'));
         }
-        return words;
+        return words.toString();
     }
-//
 
     /**
      * Метод генерирует предложение
@@ -83,7 +82,7 @@ public class TxtGenerator {
      * В предложении после произвольных слов могут находиться запятые.
      * Предложение заканчивается (.|!|?)+" "
      */
-    public StringBuilder getSentence(String[] wordsVoc, int probability) {
+    public String getSentence(String[] wordsVoc, int probability) {
         StringBuilder builder = new StringBuilder();
         int n1 = rd.nextInt(14) + 1;
         String s = "";
@@ -94,35 +93,28 @@ public class TxtGenerator {
                 wordsFromVoc = true;
             }
             if (!wordsFromVoc && i > 0) {
-                s = getWord().toString();
+                s = getWord();
             } else {
                 s = wordsVoc[rd.nextInt(wordsVoc.length)];
             }
-
-            if (i == 0) {
-                builder.append(s.substring(0, 1).toUpperCase() + s.substring(1));
-
-                if(i == n1 - 1) {
-                    int n0 = rd.nextInt(3);
-                    char symbol = charDict[n0];
-                    builder.append(symbol + " ");
-                }
-
-            } else if (i == n1 - 1) {
-                int n0 = rd.nextInt(3);
-                char symbol = charDict[n0];
-                builder.append(" " + s + symbol + " ");
-
-            } else {
-                if (rd.nextInt(4) > 2) {
-                    builder.append("," + " ");
-                }else{
-                    builder.append(" ");
-                }
-                builder.append(s);
-            }
+            builder.append(s + " ");
         }
-        return builder;
+
+        // рандомно добавляем в конец предложения символ . / ! / ?
+        int n0 = rd.nextInt(3);
+        char symbol = charDict[n0];
+        builder.setCharAt(builder.length() - 1, symbol);
+        builder.append(" ");
+
+        // рандомно добавляем в предложение запятые
+        if (rd.nextInt(4) > 2) {
+            s.replaceAll(" ", ", ");
+        }
+
+        String word = builder.toString();
+        // Первую букву предложения делаем заглавной
+        word = word.substring(0, 1).toUpperCase() + word.substring(1);
+        return word;
     }
 
     /**
@@ -131,19 +123,18 @@ public class TxtGenerator {
      * Абзац состоит из 1<=n3<=20 предложений.
      * В конце абзаца стоит разрыв строки и перенос каретки.
      */
-    public StringBuilder getParagraph(String[] wordsVoc, int probability) {
+    public String getParagraph(String[] wordsVoc, int probability) {
         StringBuilder builderParagraph = new StringBuilder();
         int n3 = rd.nextInt(20);
         for (int i = 0; i < n3; i++) {
-            String s = getSentence(wordsVoc, probability).toString();
+            String s = getSentence(wordsVoc, probability);
             if (i == n3 - 1) {
                 builderParagraph.append(s + "\n");
             } else {
                 builderParagraph.append(s);
-
             }
         }
-        return builderParagraph;
+        return builderParagraph.toString();
     }
 
 }
