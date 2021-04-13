@@ -85,18 +85,19 @@ public class TxtGenerator {
     public String getSentence(String[] wordsVoc, int probability) {
         StringBuilder builder = new StringBuilder();
         int n1 = rd.nextInt(14) + 1;
-        String s = "";
+        String s = null;
         boolean wordsFromVoc = false;
-
+        int iWordInVoc = rd.nextInt(n1);
+        if (rd.nextInt(100) < probability) {
+            wordsFromVoc = true;
+            }
         for (int i = 0; i < n1; i++) {
-            if (rd.nextInt(100) < probability) {
-                wordsFromVoc = true;
-            }
-            if (!wordsFromVoc && i > 0) {
-                s = getWord();
-            } else {
-                s = wordsVoc[rd.nextInt(wordsVoc.length)];
-            }
+            s = (wordsFromVoc && i == iWordInVoc) ? wordsVoc[rd.nextInt(wordsVoc.length)]:getWord();
+//             if (wordsFromVoc && i == iWordInVoc) {
+//                s = wordsVoc[rd.nextInt(wordsVoc.length)];
+//            } else {
+//                s = getWord();
+//            }
             builder.append(s + " ");
         }
 
@@ -127,13 +128,14 @@ public class TxtGenerator {
         StringBuilder builderParagraph = new StringBuilder();
         int n3 = rd.nextInt(20);
         for (int i = 0; i < n3; i++) {
-            String s = getSentence(wordsVoc, probability);
-            if (i == n3 - 1) {
-                builderParagraph.append(s + "\n");
-            } else {
-                builderParagraph.append(s);
-            }
+            builderParagraph.append(getSentence(wordsVoc, probability));
+//            if (i == n3 - 1) {
+//                builderParagraph.append(s + "\n");
+//            } else {
+//                builderParagraph.append(s);
+//            }
         }
+        builderParagraph.append("\n");
         return builderParagraph.toString();
     }
 
