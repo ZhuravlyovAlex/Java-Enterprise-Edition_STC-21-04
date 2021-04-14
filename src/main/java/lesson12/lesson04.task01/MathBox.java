@@ -22,7 +22,6 @@ public class MathBox<T extends Number> {
 
     public MathBox(T[] number) throws DublicateException {
         set = new HashSet<>();
-
         for (T num : number) {
             if (!set.contains(num)) {
                 set.add(num);

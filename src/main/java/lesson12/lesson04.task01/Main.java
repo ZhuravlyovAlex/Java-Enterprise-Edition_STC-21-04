@@ -21,10 +21,9 @@ public class Main {
 
 
         System.out.println("результат отработки метода: remove (удаляем объект Integer)");
-        for (Number remInt : numbers ) {  // Пытаемся удалить из коллекции раннее добавленный элемент Integer.
-            if (remInt.getClass() == Integer.class){
-                Integer rem = (Integer) remInt;
-                el.remove(rem);
+        for (Number remInt : numbers) {  // Пытаемся удалить из коллекции раннее добавленный элемент Integer.
+            if (remInt instanceof Integer) {
+                el.remove((Integer) remInt);
             }
         }
 
@@ -41,6 +40,5 @@ public class Main {
         el.splitter(div);
         System.out.println(el.toString());
         System.out.println();
-
     }
 }
