@@ -13,65 +13,60 @@ import java.util.*;
  * petUpdate - изменение данных животного по его идентификатору
  * sortView - вывод на экран списка животных в отсортированном порядке. Поля для сортировки –  хозяин, кличка животного, вес.
  * <p>
- * version 1.0
+ * version 2.0
  * Copyright Журавлёв Алексей
  */
 
 public class PetCardList<T extends Pet> {
     Comparator<Pet> petComparator = new Pet.PetOwnerComparator().thenComparing(new Pet.PetNameComparator()).thenComparing(new Pet.PetWeightComparator());
-    private List<T> pets = new ArrayList<T>();
-    private Map<String, T> petsMap = new HashMap<String, T>();
-    private Map<Integer, T> petsId = new HashMap<Integer, T>();
+    private Map<Integer, T> pets = new HashMap<Integer, T>();
 
     public void addPet(T t) { // добавления животного в общий список (учитывается, что добавление дубликатов должно приводить к исключительной ситуации)
-        if (pets.contains(t)) {
+        if (pets.containsValue(t)) {
             try {
                 throw new PetDuplicateException();
             } catch (PetDuplicateException err) {
                 System.out.println("Ошибка! В картотеке уже имеется данный питомец. \n");
             }
         } else {
-            pets.add(t);
-            petsMap.put(t.getName(), t);
-            petsId.put(t.getId(), t);
+            pets.put(t.getId(), t);
         }
-
     }
 
     public void search(String name) { // поиск животного по его кличке.
-        T petInfo = petsMap.get(name);
-        System.out.println(petInfo);
+        for (Pet pet : pets.values()) {
+            if (name.equals(pet.getName())) {
+                System.out.println(pet);
+            }
+        }
     }
 
     public void petUpdate(int id, double weight) { // изменение данных животного по его идентификатору.
-        T pet = (T) petsId.get(id);
-        pets.remove(pet);
+        T pet = (T) pets.get(id);
         pet.setWeight(weight);
-        addCollect(pet);
+        pets.put(pet.getId(), pet);
     }
 
     public void petUpdate(int id, String name) { // изменение клички животного по его идентификатору.
-        T pet = (T) petsId.get(id);
-        pets.remove(pet);
+        T pet = pets.get(id);
         pet.setName(name);
-        addCollect(pet);
+        pets.put(pet.getId(), pet);
     }
 
     public void petUpdate(int id, Person owner) { // изменение владельца животного по его идентификатору.
-        T pet = (T) petsId.get(id);
-        pets.remove(pet);
+        T pet = (T) pets.get(id);
         pet.setOwner(owner);
-        addCollect(pet);
-    }
-    private void addCollect(T pet){ // метод добавляющий в коллекции сделанные в petUpdate изменения
-        pets.add((T) pet);
-        petsMap.put(pet.getName(), pet);
-        petsId.put(pet.getId(), pet);
+        pets.put(pet.getId(), pet);
     }
 
     public void sortView() { // вывод на экран списка животных в отсортированном порядке. Поля для сортировки –  хозяин, кличка животного, вес.
-        pets.sort(petComparator);
-        for (Pet pet : pets) {
+        List list = new ArrayList();
+        for (Pet pet : pets.values()) {
+            list.add(pet);
+        }
+
+        Collections.sort(list, petComparator);
+        for (Object pet : list) {
             System.out.println(pet);
         }
     }
