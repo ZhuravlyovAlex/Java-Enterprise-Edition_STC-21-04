@@ -1,70 +1,41 @@
 package lesson11.task01;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
-    static PrintWriter outMessage = null;
-    static BufferedReader inMessage = null;
+    private Socket socket;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
 
-    public static void main(String[] args) throws IOException {
-
-        Socket socket = null;
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("starting connection...");
-        try {
-            socket = new Socket("127.0.0.1", Server.SERVER_PORT);
-
-            inMessage =
-                    new BufferedReader(new InputStreamReader(socket.getInputStream()
-                    ));
-            outMessage =
-                    new PrintWriter(new OutputStreamWriter(socket.getOutputStream()
-                    ));
-            System.out.println("Input your name:");
-            outMessage.println(sc.nextLine());
-
-            Sender sender = new Sender();
-            Thread thread = new Thread(sender);
-            thread.start();
-
-            sender.setDesconnect();
-            // выводим на печать ответ от сервера
-            String answer;
-            while ((answer = inMessage.readLine()) != null) {
-                System.out.println(inMessage.readLine());
-            }
-
-        } catch (IOException err) {
-            System.out.println("Произошла ошибка вводв-вывода " + err.getMessage());
-        }
-        socket.close();
+    public Client(Socket socket) {
+        this.socket = socket;
     }
 
-    private static class Sender implements Runnable {
-        private boolean desconnect;
+    public Client(Socket socket, ObjectOutputStream oos, ObjectInputStream ois) {
+        this.socket = socket;
+        this.oos = oos;
+        this.ois = ois;
+    }
 
-        public void setDesconnect() {
-            desconnect = true;
-        }
+    public void setOos(ObjectOutputStream oos) {
+        this.oos = oos;
+    }
 
-        @Override
-        public void run() {
+    public void setOis(ObjectInputStream ois) {
+        this.ois = ois;
+    }
 
-            while (!desconnect) {
-                Scanner sc = new Scanner(System.in);
-                String message;
-                while (!(message = sc.nextLine()).isEmpty()) {
-                    outMessage.write(message);
-                    outMessage.flush();
-                }
-            }
-        }
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public ObjectOutputStream getOos() {
+        return oos;
+    }
+
+    public ObjectInputStream getOis() {
+        return ois;
     }
 }
