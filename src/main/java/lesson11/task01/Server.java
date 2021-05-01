@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Разработать приложение - многопользовательский чат, в котором участвует произвольное количество клиентов.
@@ -18,45 +20,86 @@ import java.net.Socket;
  * Copyright Журавлёв Алексей
  */
 
-public class Server {
+public class Server extends Thread {
 
     public static final Integer SERVER_PORT = 25552;
-    private static UsersList list = new UsersList();
+    private static Map<String, Client> users = new HashMap<>();
+    private static Socket clientSocket = null;
+    private static int num;
+
+    public Server() {
+    }
+
+    public void setSocket(int num, Socket clientSocket) {
+        this.num = num;
+        this.clientSocket = clientSocket;
+        setDaemon(true);
+        start();
+    }
 
     public static void main(String[] args) {
 
         ServerSocket socketListener = null;
-        Socket client = null;
+
         try {
+            int i = 0; // Счетчик подключений
             socketListener = new ServerSocket(SERVER_PORT);
+            System.out.println("Server started\n");
+
             while (true) {
-                client = null;
-                while (client == null) {
-                    client = socketListener.accept();
+                clientSocket = null;
+                while (clientSocket == null) {
+                    clientSocket = socketListener.accept();
                 }
-                new ClientThread(client);
+                new Server().setSocket(i++, clientSocket);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (socketListener != null) {
+                try {
+                    socketListener.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+    }
 
-        try (BufferedReader clientReader =
-                     new BufferedReader(new InputStreamReader(client.getInputStream()));
-             BufferedWriter clientWriter =
-                     new BufferedWriter(new OutputStreamWriter(client.getOutputStream()))
+    @Override
+    public void run() {
+        try (BufferedReader toServer =
+                     new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             BufferedWriter fromServer =
+                     new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
         ) {
             String message;
-            while ((message = clientReader.readLine()) != null) {
+            String name = toServer.readLine();
+            Client client = new Client(clientSocket, name);
+            users.put(name, client);
+            fromServer.write("[" + name + "]:  User join to the chat \n");
+            fromServer.flush();
+
+            while ((message = toServer.readLine()) != null) {
                 System.out.println("Server read: " + message);
-                clientWriter.write("[" + message + "]:  User join to the chat \n");
-                clientWriter.flush();
+                broadcast(users,message);
+                fromServer.flush();
             }
         } catch (IOException e) {
             System.err.println("Ошибка ввода/вывода");
             e.printStackTrace();
         }
     }
-    public synchronized static UsersList getUsersList() {
-        return list;
+
+    private void broadcast(Map<String, Client> users, String message) {
+
+        for (Client client : users.values()) {
+            try {
+                client.fromServer().writeObject(message);
+            } catch (IOException e) {
+                System.out.println("User is not found");
+                e.printStackTrace();
+            }
+        }
     }
 }

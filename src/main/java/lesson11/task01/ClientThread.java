@@ -1,16 +1,17 @@
 package lesson11.task01;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.rmi.UnknownHostException;
 
-import static lesson11.task01.Server.getUsersList;
 
 public class ClientThread extends Thread {
     private Socket socket;
-    private Message m;
+    private String message;
     private String name;
     public static Integer CLIENT_PORT = 25553;
 
@@ -31,44 +32,61 @@ public class ClientThread extends Thread {
 
     @Override
     public void run() {
-        try (ObjectOutputStream writer = new ObjectOutputStream(this.socket.getOutputStream());
-             ObjectInputStream reader = new ObjectInputStream(this.socket.getInputStream())) {
-
+        try (BufferedReader toServer = new BufferedReader(
+                new InputStreamReader(this.socket.getInputStream()));
+             PrintWriter fromServer = new PrintWriter(
+                     new OutputStreamWriter(this.socket.getOutputStream()
+                     ))) {
             System.out.println("Input your name:");
-            this.m = (Message) reader.readObject();
-            this.name = this.m.getName();
-            /**
-             * Отправляем сообщения пользователям
-             */
-            if (!this.m.getMessage().equals("User join to the chat")) {
-                System.out.println("[" + this.m.getName() + "]: " + this.m.getMessage());
-                this.broadcast(getUsersList().getClientsList(), this.m);
-            } else {
-                writer.writeObject("User " + name + " join to the chat");
+            while ((message = toServer.readLine()) != null) {
+                System.out.println(toServer.readLine());
+                fromServer.println(message);
             }
 
-            /**
-             * Добавляем нового пользователя к списку
-             */
-            getUsersList().addUser(name, socket, writer, reader);
-            //Для ответа, указываем список доступных пользователей
-            this.m.setUsers(getUsersList().getUsers());
-            //Принимаем сообщение
-            this.m = (Message) reader.readObject();
-        } catch (Exception e) {
-            System.out.println(e);
+//            this.name = this.message.getName();
+//            /**
+//             * Отправляем сообщения пользователям
+//             */
+//            if (!this.message.getMessage().
+//
+//                    equals("User join to the chat")) {
+//                System.out.println("[" + this.message.getName() + "]: " + this.message.getMessage());
+//                this.broadcast(getUsersList().getClientsList(), this.message);
+//            } else {
+//                writer.writeObject("User " + name + " join to the chat");
+//            }
+//
+//            /**
+//             * Добавляем нового пользователя к списку
+//             */
+//            getUsersList().
+//
+//                    addUser(name, socket, writer, reader);
+//            //Для ответа, указываем список доступных пользователей
+//            this.message.setUsers(
+//
+//                    getUsersList().
+//
+//                            getUsers());
+//            //Принимаем сообщение
+//            this.message = reader.readObject();
+
+        } catch (UnknownHostException err) {
+            System.out.println("Неизвесный хост");
+        } catch (IOException err) {
+            System.out.println("Произошла ошибка ввода/вывода " + err.getMessage());
         }
     }
 
-    private void broadcast(ArrayList<Client> clientsArrayList, Message message) {
-
-        for (Client client : clientsArrayList) {
-            try {
-                client.getOos().writeObject(message);
-            } catch (IOException e) {
-                System.out.println("User is not found");
-                e.printStackTrace();
-            }
-        }
-    }
+//    private void broadcast(ArrayList<Client> clientsArrayList, String message) {
+//
+//        for (Client client : clientsArrayList) {
+//            try {
+//                client.fromServer().writeObject(message);
+//            } catch (IOException e) {
+//                System.out.println("User is not found");
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
