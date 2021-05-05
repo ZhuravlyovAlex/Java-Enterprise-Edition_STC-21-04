@@ -7,69 +7,38 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
-
+import java.util.Scanner;
 
 public class ClientThread extends Thread {
-    private Socket socket;
-    private String message;
-    private String name;
-    public static Integer CLIENT_PORT = 25553;
+    private static Socket clientSocket;
+    private static Scanner scanner;
+    private static BufferedReader fromServer;
+    private static PrintWriter toServer;
 
     public ClientThread(Socket socket) {
-        this.socket = socket;
-        this.start();
-    }
-
-    public static void main(String[] args) {
-        Socket clientSocket = null;
-        try {
-            clientSocket = new Socket("127.0.0.1", Server.SERVER_PORT);
-            new ClientThread(clientSocket);
-        } catch (IOException e) {
-            System.err.println("Ups...");
-        }
+        clientSocket = socket;
+        start();
     }
 
     @Override
     public void run() {
-        try (BufferedReader toServer = new BufferedReader(
-                new InputStreamReader(this.socket.getInputStream()));
-             PrintWriter fromServer = new PrintWriter(
-                     new OutputStreamWriter(this.socket.getOutputStream()
-                     ))) {
-            System.out.println("Input your name:");
-            while ((message = toServer.readLine()) != null) {
-                System.out.println(toServer.readLine());
-                fromServer.println(message);
-            }
+        try {
+            fromServer = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream()));
+            toServer = new PrintWriter(
+                    new OutputStreamWriter(clientSocket.getOutputStream()), true);
 
-//            this.name = this.message.getName();
-//            /**
-//             * Отправляем сообщения пользователям
-//             */
-//            if (!this.message.getMessage().
-//
-//                    equals("User join to the chat")) {
-//                System.out.println("[" + this.message.getName() + "]: " + this.message.getMessage());
-//                this.broadcast(getUsersList().getClientsList(), this.message);
-//            } else {
-//                writer.writeObject("User " + name + " join to the chat");
-//            }
-//
-//            /**
-//             * Добавляем нового пользователя к списку
-//             */
-//            getUsersList().
-//
-//                    addUser(name, socket, writer, reader);
-//            //Для ответа, указываем список доступных пользователей
-//            this.message.setUsers(
-//
-//                    getUsersList().
-//
-//                            getUsers());
-//            //Принимаем сообщение
-//            this.message = reader.readObject();
+            scanner = new Scanner(System.in);
+            System.out.println("Input your name:");
+            toServer.println(scanner.nextLine());
+
+            WriteMessageToServer writeMessageToServer = new WriteMessageToServer();
+            Thread writeThread = new Thread(writeMessageToServer);
+            writeThread.start();
+
+            ReadMessageFromServer readMessageFromServer = new ReadMessageFromServer();
+            Thread readThread = new Thread(readMessageFromServer);
+            readThread.start();
 
         } catch (UnknownHostException err) {
             System.out.println("Неизвесный хост");
@@ -78,15 +47,39 @@ public class ClientThread extends Thread {
         }
     }
 
-//    private void broadcast(ArrayList<Client> clientsArrayList, String message) {
-//
-//        for (Client client : clientsArrayList) {
-//            try {
-//                client.fromServer().writeObject(message);
-//            } catch (IOException e) {
-//                System.out.println("User is not found");
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public static class WriteMessageToServer extends Thread {
+        @Override
+        public void run() {
+            String messageToServer;
+            while (true) {
+                messageToServer = scanner.nextLine();
+                if (messageToServer.equals("stop")) {
+                    toServer.print("stop" + "\n");
+                    break;
+                } else {
+                    toServer.write(messageToServer + "\n");
+                }
+                toServer.flush();
+            }
+        }
+    }
+
+    public static class ReadMessageFromServer extends Thread {
+        @Override
+        public void run() {
+            try {
+                String messageFromServer;
+                while (true) {
+                    messageFromServer = fromServer.readLine();
+                    if (messageFromServer.equals("stop")) {
+                        break;
+                    }else{
+                        System.out.println(messageFromServer);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
