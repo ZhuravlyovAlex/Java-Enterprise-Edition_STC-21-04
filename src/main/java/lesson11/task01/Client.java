@@ -1,34 +1,13 @@
 package lesson11.task01;
 
-import java.net.Socket;
-
 public class Client {
-    private Socket socket;
-    private String name;
+    private Server.Connection connection;
+
     private String messageFromServer;
     private String messageToServer;
 
-
-    public Client(Socket socket) {
-
-        this.socket = socket;
-
-//        try {
-//            in = new BufferedReader(new InputStreamReader(
-//                    socket.getInputStream()));
-//            out = new PrintWriter(socket.getOutputStream(), true);
-//
-//        } catch (IOException e) {
-//            close();
-//        }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Client(Server.Connection connection) {
+        this.connection = connection;
     }
 
     public String getMessageFromServer() {
@@ -47,8 +26,7 @@ public class Client {
         this.messageToServer = messageToServer;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public Server.Connection getConnection() {
+        return connection;
     }
-
 }

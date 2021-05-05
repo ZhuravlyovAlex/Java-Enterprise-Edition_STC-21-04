@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.rmi.UnknownHostException;
 import java.util.Scanner;
 
-public class ClientThread extends Thread {
+public class ClientThread  {
     private static Socket clientSocket;
     private static Scanner scanner;
     private static BufferedReader fromServer;
@@ -17,35 +17,51 @@ public class ClientThread extends Thread {
 
     public ClientThread(Socket socket) {
         clientSocket = socket;
-        start();
-    }
-
-    @Override
-    public void run() {
         try {
             fromServer = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
+                        new InputStreamReader(clientSocket.getInputStream()));
             toServer = new PrintWriter(
                     new OutputStreamWriter(clientSocket.getOutputStream()), true);
-
-            scanner = new Scanner(System.in);
-            System.out.println("Input your name:");
-            toServer.println(scanner.nextLine());
-
-            WriteMessageToServer writeMessageToServer = new WriteMessageToServer();
-            Thread writeThread = new Thread(writeMessageToServer);
-            writeThread.start();
-
-            ReadMessageFromServer readMessageFromServer = new ReadMessageFromServer();
-            Thread readThread = new Thread(readMessageFromServer);
-            readThread.start();
-
-        } catch (UnknownHostException err) {
-            System.out.println("Неизвесный хост");
-        } catch (IOException err) {
-            System.out.println("Произошла ошибка ввода/вывода " + err.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        scanner = new Scanner(System.in);
+        WriteMessageToServer writeMessageToServer = new WriteMessageToServer();
+        Thread writeThread = new Thread(writeMessageToServer);
+        writeThread.start();
+
+        ReadMessageFromServer readMessageFromServer = new ReadMessageFromServer();
+        Thread readThread = new Thread(readMessageFromServer);
+        readThread.start();
+
     }
+
+//    @Override
+//    public void run() {
+//        try {
+//            fromServer = new BufferedReader(
+//                    new InputStreamReader(clientSocket.getInputStream()));
+//            toServer = new PrintWriter(
+//                    new OutputStreamWriter(clientSocket.getOutputStream()), true);
+//
+//            scanner = new Scanner(System.in);
+//            System.out.println("Input your name:");
+//            toServer.println(scanner.nextLine());
+//
+//            WriteMessageToServer writeMessageToServer = new WriteMessageToServer();
+//            Thread writeThread = new Thread(writeMessageToServer);
+//            writeThread.start();
+//
+//            ReadMessageFromServer readMessageFromServer = new ReadMessageFromServer();
+//            Thread readThread = new Thread(readMessageFromServer);
+//            readThread.start();
+//
+//        } catch (UnknownHostException err) {
+//            System.out.println("Неизвесный хост");
+//        } catch (IOException err) {
+//            System.out.println("Произошла ошибка ввода/вывода " + err.getMessage());
+//        }
+//    }
 
     public static class WriteMessageToServer extends Thread {
         @Override
