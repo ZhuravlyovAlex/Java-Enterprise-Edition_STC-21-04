@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,27 +19,30 @@ import java.util.concurrent.Future;
  * что будет гораздо быстрее
  * <p>
  * * <p>
- * version 1.0
+ * version 2.0
  * Copyright Журавлёв Алексей
  */
 
 public class Main {
 
+    public static ConcurrentNavigableMap<Integer,BigInteger> cache;
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
+        cache = new ConcurrentSkipListMap<>();
         int[] nums = new int[]{26, 7, 45, 12, 8, 21, 5, 67, 19, 98, 34, 3, 2, 5, 260, 7, 450, 12, 8, 21};
 
-        final ExecutorService forkJoinPool = Executors.newWorkStealingPool();
+        final ExecutorService executor = Executors.newFixedThreadPool(4);
 
         List<Callable<BigInteger>> factorialResult = new ArrayList<>();
 
         for (int i = 0; i < nums.length; i++) {
-            factorialResult.add(new MyFactorialCallable(nums[i]));
+            Callable<BigInteger> result = new MyFactorialCallable(nums[i]);
+            factorialResult.add(result);
         }
-
-        for (Future<BigInteger> fr : forkJoinPool.invokeAll(factorialResult)) {
-            System.out.println(fr.get());
+        for (Future<BigInteger> fResult : executor.invokeAll(factorialResult)) {
+            System.out.println(fResult.get());
         }
+        executor.shutdown();
     }
 }

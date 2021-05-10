@@ -1,8 +1,9 @@
 package lesson08;
 
 import java.math.BigInteger;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
+
+import static lesson08.Main.cache;
 
 public class MyFactorialCallable implements Callable<BigInteger> {
 
@@ -11,15 +12,16 @@ public class MyFactorialCallable implements Callable<BigInteger> {
     public MyFactorialCallable(int n) {
         this.n = n;
     }
-    /*
-    В методе call реализуем нерекурсивный агоритм для вычисления факториала передоваемого числа.
-    В методе рализовано кэширование ранее найденных значений, для увеличения скорости вычисления.
+
+    /**
+     * В методе call реализуем нерекурсивный агоритм для вычисления факториала передаваемого числа.
+     * В методе рализовано кэширование ранее найденных значений, для увеличения скорости вычисления.
      */
+
     @Override
     public BigInteger call() throws Exception {
         BigInteger result;
 
-        TreeMap<Integer, BigInteger> cache = new TreeMap<>();
         cache.put(0, BigInteger.ONE);
         cache.put(1, BigInteger.ONE);
 
